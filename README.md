@@ -164,6 +164,47 @@ The exception tree is small:
 
 Symfony's own config stack (parameters, env var processors, the Secrets vault) covers most needs. Where PHacet helps is giving you one typed object hydrated from layered sources, injectable like any service.
 
+### Compared to Symfony's own config
+
+In a standard Symfony app you reference env values as `%env(int:X)%` strings across YAML and `#[Autowire]` arguments, casting one value at a time:
+
+```php
+final class ConnectionFactory
+{
+    public function __construct(
+        #[Autowire('%env(int:APP_POOL_SIZE)%')]
+        private int $poolSize,
+        #[Autowire('%env(APP_REGION)%')]
+        private string $region,
+    ) {}
+}
+```
+
+PHacet makes the class the definition and injects it whole:
+
+```php
+final class ConnectionConfig
+{
+    public function __construct(
+        #[Env('APP_POOL_SIZE')]
+        public int $poolSize = 10,
+        #[Env('APP_REGION')]
+        public string $region = 'eu-west-1',
+    ) {}
+}
+```
+
+What you get for it:
+
+- A typed object instead of stringly-typed parameters. `$config->poolSize` is an `int` your IDE and PHPStan track, with no `%env()%` key to typo and no `TreeBuilder` Configuration tree to write for structure.
+- Validation in one pass. PHacet collects every coercion failure into a single `MappingError` with field-level messages, where env processors fail one value at a time.
+- The CLI as a config layer. Defaults, file, env, and CLI merge per key in the order you choose, so `--port 9000` overrides the env value without dropping a host a file set. Symfony's chain covers `.env` and real env but leaves the CLI to you.
+- A class that runs anywhere. `ConnectionConfig` doesn't touch the container, so the same type works in a worker, a binary, or a test without booting the kernel.
+
+Keep Symfony's own config for ordinary web requests, where the compiled container caches everything and the stack already does the job. Reach for PHacet when you want config as one typed object, in console tools, workers, and standalone services. The reflection cost under PHP-FPM is the thing to weigh (see the caveat below).
+
+### As a service
+
 Define the config class, then build it in a factory:
 
 ```php
