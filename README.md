@@ -342,7 +342,41 @@ The options default to `null`, and `array_filter` drops the ones nobody passed s
 
 Skip PHacet's subcommands, counted flags, and `help()` in this setting. They overlap with Symfony's command classes and help system. PHacet's CLI parser is for standalone binaries, not commands already inside a `Console\Application`.
 
-One caveat: the container is cached, but this factory runs reflection on every request under PHP-FPM, since PHacet doesn't cache the reflection plan yet. For a few config classes that cost is small. For CLI tools and workers, where the process starts once, it's a non-issue.
+One caveat: the container is cached, but this factory runs reflection on every request under PHP-FPM. For a few config classes that cost is small, and for CLI tools and workers where the process starts once it's a non-issue. When it matters, hand `Layered` a cache (see below) so PHacet reads the reflection plan once and reuses it.
+
+## ⚡ Caching the reflection plan
+
+`Layered` introspects your config class every time you call `build()` or `help()`. Pass a cache and PHacet computes that plan once, then reuses it on later runs. PHacet accepts either a PSR-6 pool or a PSR-16 cache; give it whichever your app already has.
+
+```php
+use PHacet\Layered;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+
+$config = Layered::for(ServerConfig::class)
+    ->cache(new FilesystemAdapter())   // PSR-6 pool, or any Psr\SimpleCache\CacheInterface
+    ->files(['/etc/myapp.json'])
+    ->env('MYAPP', $_SERVER)
+    ->build();
+```
+
+PHacet derives the cache key from the class name and the source file's modification time, so editing your config class invalidates the old plan.
+
+The cache is best-effort. If the backend fails on a read or a write, PHacet falls back to fresh reflection instead of raising an error, so a broken cache never breaks config loading. Pass a PSR-3 logger as the second argument to `cache()` to record those failures:
+
+```php
+Layered::for(AppConfig::class)
+    ->cache(new FilesystemAdapter(), $logger)   // $logger is a Psr\Log\LoggerInterface
+    ->build();
+```
+
+Install whichever contract you use:
+
+```bash
+composer require psr/cache         # PSR-6
+composer require psr/simple-cache  # PSR-16
+```
+
+Treat the cache backend as trusted. Your PSR adapter deserializes stored values, usually through PHP's `unserialize()`, before PHacet ever sees them, so anyone who can write to the store can run code in your process. That's the standard PHP cache trust model, not specific to PHacet, and PHacet's `instanceof` check guards against stale or unexpected entries, not hostile ones. Keep Redis or Memcached behind authentication on a private network, and don't point `cache()` at a store untrusted parties can write to.
 
 ## 🛠️ Development
 
