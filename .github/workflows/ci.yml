@@ -49,7 +49,7 @@ jobs:
       - name: Set up Mago
         uses: nhedger/setup-mago@v2
         with:
-          version: 1.30.0
+          version: 1.40.0
 
       - name: Check formatting
         run: mago format --check
