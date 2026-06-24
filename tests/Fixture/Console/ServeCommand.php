@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Fixture\Console;
+namespace Phigue\Tests\Fixture\Console;
 
-use PHacet\Layered;
-use PHacet\Tests\Fixture\ServerConfig;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\ServerConfig;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

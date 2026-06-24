@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace PHacet;
+namespace Phigue;
 
 use BackedEnum;
-use PHacet\Exception\MappingError;
-use PHacet\Exception\MissingRequired;
-use PHacet\Exception\TypeMismatch;
-use PHacet\Shape\Field;
-use PHacet\Shape\Shape;
+use Phigue\Exception\MappingError;
+use Phigue\Exception\MissingRequired;
+use Phigue\Exception\TypeMismatch;
+use Phigue\Shape\Field;
+use Phigue\Shape\Shape;
 
 final readonly class Hydrator
 {

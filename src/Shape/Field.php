@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Shape;
+namespace Phigue\Shape;
 
 final readonly class Field
 {

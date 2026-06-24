@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Cache;
+namespace Phigue\Cache;
 
-use PHacet\Shape\Shape;
+use Phigue\Shape\Shape;
 
 /**
  * Resolves a target class's reflection plan and caches it across runs.

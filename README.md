@@ -1,26 +1,26 @@
-# PHacet
+# Phigue
 
 Layered configuration for PHP, hydrated into a typed object through reflection.
 
-You write one class with typed properties and a few attributes. PHacet reads that class and fills it from defaults, config files, environment variables, and CLI arguments, in that order, with later sources overriding earlier ones. The result is your class, fully typed, not an array you have to guess at.
+You write one class with typed properties and a few attributes. Phigue reads that class and fills it from defaults, config files, environment variables, and CLI arguments, in that order, with later sources overriding earlier ones. The result is your class, fully typed, not an array you have to guess at.
 
 The idea comes from [facet](https://facet.rs/guide/cli/) and its `figue` crate in Rust: describe the type once, let one source of truth drive the CLI, the env reader, and the file loader.
 
 ## 📦 Installation
 
 ```bash
-composer require ptondereau/phacet
+composer require ptondereau/phigue
 ```
 
-PHacet needs PHP 8.3 or newer.
+Phigue needs PHP 8.3 or newer.
 
 ## 🚀 Quick start
 
 Describe your configuration as a class. Native property defaults are the lowest layer, so you rarely need anything else.
 
 ```php
-use PHacet\Attribute\Named;
-use PHacet\Layered;
+use Phigue\Attribute\Named;
+use Phigue\Layered;
 
 final class AppConfig
 {
@@ -59,7 +59,7 @@ You register sources in priority order. Each one contributes only the values it 
 
 For the class above, `env('MYAPP')` looks for `MYAPP_HOST`, `MYAPP_PORT`, and `MYAPP_TLS`. The CLI accepts `--host`, `-H`, `--port`, `-p`, and the flag `--tls`.
 
-The default order in the quick start is files, then env, then CLI. Pick the order that fits your app; PHacet doesn't hard-code it.
+The default order in the quick start is files, then env, then CLI. Pick the order that fits your app; Phigue doesn't hard-code it.
 
 ## 🏷️ Attributes
 
@@ -92,14 +92,14 @@ final class FlatConfig
 }
 ```
 
-Now the CLI takes `--host` and `--port` rather than `--server.host`, env reads `MYAPP_HOST` rather than `MYAPP_SERVER_HOST`, and an array source accepts top-level `host` and `port` keys. PHacet groups them back into the nested object when it builds.
+Now the CLI takes `--host` and `--port` rather than `--server.host`, env reads `MYAPP_HOST` rather than `MYAPP_SERVER_HOST`, and an array source accepts top-level `host` and `port` keys. Phigue groups them back into the nested object when it builds.
 
 ## ⌨️ Subcommands
 
 Type a property as a union of command classes and mark it `#[Subcommand]`.
 
 ```php
-use PHacet\Attribute\Subcommand;
+use Phigue\Attribute\Subcommand;
 
 final class Cli
 {
@@ -117,7 +117,7 @@ match (true) {
 };
 ```
 
-The first bare argument picks the command. `ServeCommand` answers to `serve`, `MigrateCommand` to `migrate` (PHacet strips the `Command` suffix and kebab-cases the rest). Everything after the command name parses into that command's own options and positionals. Global options still work before the command, so `-vv serve --workers 3` sets verbosity on the parent and workers on the command.
+The first bare argument picks the command. `ServeCommand` answers to `serve`, `MigrateCommand` to `migrate` (Phigue strips the `Command` suffix and kebab-cases the rest). Everything after the command name parses into that command's own options and positionals. Global options still work before the command, so `-vv serve --workers 3` sets verbosity on the parent and workers on the command.
 
 ## 📖 Generated help
 
@@ -138,10 +138,10 @@ Help is built from the same shape, so the option names, types, and defaults stay
 
 ## ⚠️ Errors
 
-PHacet collects every problem in one pass instead of stopping at the first. `build()` throws a `MappingError` whose `failures` hold the individual reasons, and `report()` formats them.
+Phigue collects every problem in one pass instead of stopping at the first. `build()` throws a `MappingError` whose `failures` hold the individual reasons, and `report()` formats them.
 
 ```php
-use PHacet\Exception\MappingError;
+use Phigue\Exception\MappingError;
 
 try {
     $config = Layered::for(AppConfig::class)->env('MYAPP')->args($argv)->build();
@@ -154,7 +154,7 @@ try {
 
 The exception tree is small:
 
-- `PHacetError`: the interface every PHacet exception implements, so you can catch the whole family
+- `PhigueError`: the interface every Phigue exception implements, so you can catch the whole family
 - `MappingError`: a build failed; carries the per-field `failures`
 - `MissingRequired`: a field with no default and no nullable type got no value
 - `TypeMismatch`: a value couldn't coerce to the property's type
@@ -162,7 +162,7 @@ The exception tree is small:
 
 ## 🎻 Using with Symfony
 
-Symfony's own config stack (parameters, env var processors, the Secrets vault) covers most needs. Where PHacet helps is giving you one typed object hydrated from layered sources, injectable like any service.
+Symfony's own config stack (parameters, env var processors, the Secrets vault) covers most needs. Where Phigue helps is giving you one typed object hydrated from layered sources, injectable like any service.
 
 ### Compared to Symfony's own config
 
@@ -180,7 +180,7 @@ final class ConnectionFactory
 }
 ```
 
-PHacet makes the class the definition and injects it whole:
+Phigue makes the class the definition and injects it whole:
 
 ```php
 final class ConnectionConfig
@@ -197,11 +197,11 @@ final class ConnectionConfig
 What you get for it:
 
 - A typed object instead of stringly-typed parameters. `$config->poolSize` is an `int` your IDE and PHPStan track, with no `%env()%` key to typo and no `TreeBuilder` Configuration tree to write for structure.
-- Validation in one pass. PHacet collects every coercion failure into a single `MappingError` with field-level messages, where env processors fail one value at a time.
+- Validation in one pass. Phigue collects every coercion failure into a single `MappingError` with field-level messages, where env processors fail one value at a time.
 - The CLI as a config layer. Defaults, file, env, and CLI merge per key in the order you choose, so `--port 9000` overrides the env value without dropping a host a file set. Symfony's chain covers `.env` and real env but leaves the CLI to you.
 - A class that runs anywhere. `ConnectionConfig` doesn't touch the container, so the same type works in a worker, a binary, or a test without booting the kernel.
 
-Keep Symfony's own config for ordinary web requests, where the compiled container caches everything and the stack already does the job. Reach for PHacet when you want config as one typed object, in console tools, workers, and standalone services. The reflection cost under PHP-FPM is the thing to weigh (see the caveat below).
+Keep Symfony's own config for ordinary web requests, where the compiled container caches everything and the stack already does the job. Reach for Phigue when you want config as one typed object, in console tools, workers, and standalone services. The reflection cost under PHP-FPM is the thing to weigh (see the caveat below).
 
 ### As a service
 
@@ -210,7 +210,7 @@ Define the config class, then build it in a factory:
 ```php
 namespace App\Config;
 
-use PHacet\Attribute\Env;
+use Phigue\Attribute\Env;
 
 final class AppConfig
 {
@@ -226,7 +226,7 @@ final class AppConfig
 ```php
 namespace App\Config;
 
-use PHacet\Layered;
+use Phigue\Layered;
 
 final class AppConfigFactory
 {
@@ -251,21 +251,21 @@ The factory is autowired from `src/` already, so the one definition above is eno
 
 ### Dotenv
 
-Let Symfony's Dotenv do the loading and have PHacet read the result. Symfony's `bootEnv()` loads `.env`, `.env.local`, and the per-environment files into `$_SERVER` and `$_ENV`, with real system variables taking precedence over `.env` values. By the time your factory runs, `$_SERVER` holds the resolved set, so pass it to `env()`:
+Let Symfony's Dotenv do the loading and have Phigue read the result. Symfony's `bootEnv()` loads `.env`, `.env.local`, and the per-environment files into `$_SERVER` and `$_ENV`, with real system variables taking precedence over `.env` values. By the time your factory runs, `$_SERVER` holds the resolved set, so pass it to `env()`:
 
 ```php
 ->env('MYAPP', $_SERVER)
 ```
 
-Use `$_SERVER` rather than PHacet's default `getenv()`. The Symfony [docs](https://symfony.com/doc/current/configuration.html) treat `$_SERVER` and `$_ENV` as equivalent, but Dotenv skips `putenv()` by default, so `getenv()` won't see your `.env` values.
+Use `$_SERVER` rather than Phigue's default `getenv()`. The Symfony [docs](https://symfony.com/doc/current/configuration.html) treat `$_SERVER` and `$_ENV` as equivalent, but Dotenv skips `putenv()` by default, so `getenv()` won't see your `.env` values.
 
-Pick a prefix that won't clash with Symfony's own variables. `$_SERVER` carries `APP_ENV`, `APP_SECRET`, `DATABASE_URL`, and the server's `HTTP_*` entries. PHacet only reads keys matching `PREFIX_FIELD`, so the rest is ignored, but a prefix of `APP` with a field named `env` would pick up `APP_ENV`. A distinct prefix like `MYAPP` keeps them apart.
+Pick a prefix that won't clash with Symfony's own variables. `$_SERVER` carries `APP_ENV`, `APP_SECRET`, `DATABASE_URL`, and the server's `HTTP_*` entries. Phigue only reads keys matching `PREFIX_FIELD`, so the rest is ignored, but a prefix of `APP` with a field named `env` would pick up `APP_ENV`. A distinct prefix like `MYAPP` keeps them apart.
 
-PHacet coerces each value to the property's type, so you skip the `%env(int:...)%` processor for the typed object.
+Phigue coerces each value to the property's type, so you skip the `%env(int:...)%` processor for the typed object.
 
 ### Console commands
 
-Symfony Console parses argv and renders `--help` itself, so let it own the command line and use PHacet for the env and file layers. Feeding `$argv` into PHacet's `args()` inside a command parses the input twice and fights Symfony's own input definition.
+Symfony Console parses argv and renders `--help` itself, so let it own the command line and use Phigue for the env and file layers. Feeding `$argv` into Phigue's `args()` inside a command parses the input twice and fights Symfony's own input definition.
 
 When a command just needs the app config, inject the typed service:
 
@@ -295,13 +295,13 @@ final class ServeCommand extends Command
 }
 ```
 
-When you want a CLI flag to override env and file, define the option Symfony-side and fold only what the user passed into PHacet as the top layer:
+When you want a CLI flag to override env and file, define the option Symfony-side and fold only what the user passed into Phigue as the top layer:
 
 ```php
 namespace App\Command;
 
 use App\Config\ServerConfig;
-use PHacet\Layered;
+use Phigue\Layered;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -338,18 +338,18 @@ final class ServeCommand extends Command
 }
 ```
 
-The options default to `null`, and `array_filter` drops the ones nobody passed so they don't overwrite env or file. PHacet coerces `--port` to `int` on build, and you keep the full chain: defaults, then file, then env, then CLI.
+The options default to `null`, and `array_filter` drops the ones nobody passed so they don't overwrite env or file. Phigue coerces `--port` to `int` on build, and you keep the full chain: defaults, then file, then env, then CLI.
 
-Skip PHacet's subcommands, counted flags, and `help()` in this setting. They overlap with Symfony's command classes and help system. PHacet's CLI parser is for standalone binaries, not commands already inside a `Console\Application`.
+Skip Phigue's subcommands, counted flags, and `help()` in this setting. They overlap with Symfony's command classes and help system. Phigue's CLI parser is for standalone binaries, not commands already inside a `Console\Application`.
 
-One caveat: the container is cached, but this factory runs reflection on every request under PHP-FPM. For a few config classes that cost is small, and for CLI tools and workers where the process starts once it's a non-issue. When it matters, hand `Layered` a cache (see below) so PHacet reads the reflection plan once and reuses it.
+One caveat: the container is cached, but this factory runs reflection on every request under PHP-FPM. For a few config classes that cost is small, and for CLI tools and workers where the process starts once it's a non-issue. When it matters, hand `Layered` a cache (see below) so Phigue reads the reflection plan once and reuses it.
 
 ## ⚡ Caching the reflection plan
 
-`Layered` introspects your config class every time you call `build()` or `help()`. Pass a cache and PHacet computes that plan once, then reuses it on later runs. PHacet accepts either a PSR-6 pool or a PSR-16 cache; give it whichever your app already has.
+`Layered` introspects your config class every time you call `build()` or `help()`. Pass a cache and Phigue computes that plan once, then reuses it on later runs. Phigue accepts either a PSR-6 pool or a PSR-16 cache; give it whichever your app already has.
 
 ```php
-use PHacet\Layered;
+use Phigue\Layered;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 $config = Layered::for(ServerConfig::class)
@@ -359,9 +359,9 @@ $config = Layered::for(ServerConfig::class)
     ->build();
 ```
 
-PHacet derives the cache key from the class name and the source file's modification time, so editing your config class invalidates the old plan.
+Phigue derives the cache key from the class name and the source file's modification time, so editing your config class invalidates the old plan.
 
-The cache is best-effort. If the backend fails on a read or a write, PHacet falls back to fresh reflection instead of raising an error, so a broken cache never breaks config loading. Pass a PSR-3 logger as the second argument to `cache()` to record those failures:
+The cache is best-effort. If the backend fails on a read or a write, Phigue falls back to fresh reflection instead of raising an error, so a broken cache never breaks config loading. Pass a PSR-3 logger as the second argument to `cache()` to record those failures:
 
 ```php
 Layered::for(AppConfig::class)
@@ -376,7 +376,7 @@ composer require psr/cache         # PSR-6
 composer require psr/simple-cache  # PSR-16
 ```
 
-Treat the cache backend as trusted. Your PSR adapter deserializes stored values, usually through PHP's `unserialize()`, before PHacet ever sees them, so anyone who can write to the store can run code in your process. That's the standard PHP cache trust model, not specific to PHacet, and PHacet's `instanceof` check guards against stale or unexpected entries, not hostile ones. Keep Redis or Memcached behind authentication on a private network, and don't point `cache()` at a store untrusted parties can write to.
+Treat the cache backend as trusted. Your PSR adapter deserializes stored values, usually through PHP's `unserialize()`, before Phigue ever sees them, so anyone who can write to the store can run code in your process. That's the standard PHP cache trust model, not specific to Phigue, and Phigue's `instanceof` check guards against stale or unexpected entries, not hostile ones. Keep Redis or Memcached behind authentication on a private network, and don't point `cache()` at a store untrusted parties can write to.
 
 ## 🛠️ Development
 

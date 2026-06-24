@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Exception\MappingError;
-use PHacet\Layered;
-use PHacet\Tests\Fixture\LoggingConfig;
-use PHacet\Tests\Fixture\LogLevel;
+use Phigue\Exception\MappingError;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\LoggingConfig;
+use Phigue\Tests\Fixture\LogLevel;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

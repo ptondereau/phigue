@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Layered;
-use PHacet\Tests\Fixture\FlatConfig;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\FlatConfig;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Fixture;
+namespace Phigue\Tests\Fixture;
 
-use PHacet\Attribute\Flatten;
+use Phigue\Attribute\Flatten;
 
 final class FlatConfig
 {

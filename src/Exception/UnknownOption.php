@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Exception;
+namespace Phigue\Exception;
 
 final class UnknownOption extends MappingError
 {

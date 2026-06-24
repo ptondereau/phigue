@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Exception\MappingError;
-use PHacet\Layered;
-use PHacet\Tests\Fixture\Cli;
-use PHacet\Tests\Fixture\MigrateCommand;
-use PHacet\Tests\Fixture\ServeCommand;
+use Phigue\Exception\MappingError;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\Cli;
+use Phigue\Tests\Fixture\MigrateCommand;
+use Phigue\Tests\Fixture\ServeCommand;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Fixture;
+namespace Phigue\Tests\Fixture;
 
-use PHacet\Attribute\Help;
-use PHacet\Attribute\Hidden;
-use PHacet\Attribute\Named;
-use PHacet\Attribute\Positional;
-use PHacet\Attribute\Secret;
+use Phigue\Attribute\Help;
+use Phigue\Attribute\Hidden;
+use Phigue\Attribute\Named;
+use Phigue\Attribute\Positional;
+use Phigue\Attribute\Secret;
 
 final class DocumentedConfig
 {

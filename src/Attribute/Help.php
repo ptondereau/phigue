@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Attribute;
+namespace Phigue\Attribute;
 
 use Attribute;
 

@@ -2,16 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Cache\CacheKey;
-use PHacet\Layered;
-use PHacet\Shape\Shape;
-use PHacet\Tests\Fixture\NullWritePsr16Cache;
-use PHacet\Tests\Fixture\NullWritePsr6Pool;
-use PHacet\Tests\Fixture\ServerConfig;
-use PHacet\Tests\Fixture\ThrowingPsr16Cache;
-use PHacet\Tests\Fixture\ThrowingPsr6Pool;
+use Phigue\Cache\CacheKey;
+use Phigue\Layered;
+use Phigue\Shape\Shape;
+use Phigue\Tests\Fixture\NullWritePsr16Cache;
+use Phigue\Tests\Fixture\NullWritePsr6Pool;
+use Phigue\Tests\Fixture\ServerConfig;
+use Phigue\Tests\Fixture\ThrowingPsr16Cache;
+use Phigue\Tests\Fixture\ThrowingPsr6Pool;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
@@ -90,7 +90,7 @@ final class CacheTest extends TestCase
     #[Test]
     public function it_builds_a_stable_key_when_the_class_has_no_source_file(): void
     {
-        self::assertStringStartsWith('phacet.shape.', CacheKey::for(\stdClass::class));
+        self::assertStringStartsWith('phigue.shape.', CacheKey::for(\stdClass::class));
         self::assertSame(CacheKey::for(\stdClass::class), CacheKey::for(\stdClass::class));
     }
 

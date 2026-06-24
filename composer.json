@@ -1,5 +1,5 @@
 {
-    "name": "ptondereau/phacet",
+    "name": "ptondereau/phigue",
     "description": "Layered configuration hydrated into a typed object through reflection",
     "type": "library",
     "license": "MIT",
@@ -21,12 +21,12 @@
     },
     "autoload": {
         "psr-4": {
-            "PHacet\\": "src/"
+            "Phigue\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "PHacet\\Tests\\": "tests/"
+            "Phigue\\Tests\\": "tests/"
         }
     },
     "config": {

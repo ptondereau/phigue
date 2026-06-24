@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Source;
+namespace Phigue\Source;
 
-use PHacet\Exception\UnknownOption;
-use PHacet\Shape\Leaf;
-use PHacet\Shape\Shape;
+use Phigue\Exception\UnknownOption;
+use Phigue\Shape\Leaf;
+use Phigue\Shape\Shape;
 
 final class ArgvParser
 {

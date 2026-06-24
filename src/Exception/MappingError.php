@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Exception;
+namespace Phigue\Exception;
 
 use RuntimeException;
 
-class MappingError extends RuntimeException implements PHacetError
+class MappingError extends RuntimeException implements PhigueError
 {
     /** @param list<MappingError> $failures */
     public function __construct(

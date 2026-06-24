@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Fixture;
+namespace Phigue\Tests\Fixture;
 
-use PHacet\Attribute\Positional;
+use Phigue\Attribute\Positional;
 
 final class MigrateCommand
 {

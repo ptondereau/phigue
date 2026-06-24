@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Source;
+namespace Phigue\Source;
 
-use PHacet\Exception\MappingError;
-use PHacet\Shape\Shape;
+use Phigue\Exception\MappingError;
+use Phigue\Shape\Shape;
 
 final readonly class FileSource implements Source
 {

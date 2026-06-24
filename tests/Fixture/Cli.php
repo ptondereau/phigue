@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Fixture;
+namespace Phigue\Tests\Fixture;
 
-use PHacet\Attribute\Counted;
-use PHacet\Attribute\Named;
-use PHacet\Attribute\Subcommand;
+use Phigue\Attribute\Counted;
+use Phigue\Attribute\Named;
+use Phigue\Attribute\Subcommand;
 
 final class Cli
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PHacet;
+namespace Phigue;
 
 final readonly class PathTree
 {

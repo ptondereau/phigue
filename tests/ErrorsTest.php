@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Exception\MappingError;
-use PHacet\Exception\MissingRequired;
-use PHacet\Layered;
-use PHacet\Tests\Fixture\RequiredConfig;
-use PHacet\Tests\Fixture\ServerConfig;
+use Phigue\Exception\MappingError;
+use Phigue\Exception\MissingRequired;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\RequiredConfig;
+use Phigue\Tests\Fixture\ServerConfig;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Source;
+namespace Phigue\Source;
 
-use PHacet\Shape\Shape;
+use Phigue\Shape\Shape;
 
 final readonly class ArgvSource implements Source
 {

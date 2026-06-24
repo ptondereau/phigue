@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Fixture;
+namespace Phigue\Tests\Fixture;
 
 use DateInterval;
 use DateTimeInterface;

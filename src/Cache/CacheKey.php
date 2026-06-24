@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Cache;
+namespace Phigue\Cache;
 
 use ReflectionClass;
 
@@ -30,6 +30,6 @@ final class CacheKey
         $mtime = $file !== false && is_file($file) ? filemtime($file) : false;
         $stamp = $mtime !== false ? (string) $mtime : '';
 
-        return 'phacet.shape.' . sha1($target . '@' . $stamp);
+        return 'phigue.shape.' . sha1($target . '@' . $stamp);
     }
 }

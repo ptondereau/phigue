@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Phigue\Exception;
 
-final class MissingRequired extends MappingError
+use Throwable;
+
+interface PhigueError extends Throwable
 {
 }

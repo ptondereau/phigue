@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Help;
+namespace Phigue\Help;
 
 use BackedEnum;
-use PHacet\Shape\Field;
-use PHacet\Shape\Shape;
+use Phigue\Shape\Field;
+use Phigue\Shape\Shape;
 
 final readonly class HelpFormatter
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests\Integration;
+namespace Phigue\Tests\Integration;
 
-use PHacet\Tests\Fixture\Console\ServeCommand;
+use Phigue\Tests\Fixture\Console\ServeCommand;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;

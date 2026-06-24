@@ -2,15 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Layered;
-use PHacet\Tests\Fixture\CollectingLogger;
-use PHacet\Tests\Fixture\NullWritePsr16Cache;
-use PHacet\Tests\Fixture\NullWritePsr6Pool;
-use PHacet\Tests\Fixture\ServerConfig;
-use PHacet\Tests\Fixture\ThrowingPsr16Cache;
-use PHacet\Tests\Fixture\ThrowingPsr6Pool;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\CollectingLogger;
+use Phigue\Tests\Fixture\NullWritePsr16Cache;
+use Phigue\Tests\Fixture\NullWritePsr6Pool;
+use Phigue\Tests\Fixture\ServerConfig;
+use Phigue\Tests\Fixture\ThrowingPsr16Cache;
+use Phigue\Tests\Fixture\ThrowingPsr6Pool;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;

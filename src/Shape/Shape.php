@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Shape;
+namespace Phigue\Shape;
 
-use PHacet\Attribute\Counted;
-use PHacet\Attribute\Env;
-use PHacet\Attribute\Flatten;
-use PHacet\Attribute\Help;
-use PHacet\Attribute\Hidden;
-use PHacet\Attribute\Named;
-use PHacet\Attribute\Positional;
-use PHacet\Attribute\Secret;
-use PHacet\Attribute\Subcommand;
-use PHacet\Exception\MappingError;
+use Phigue\Attribute\Counted;
+use Phigue\Attribute\Env;
+use Phigue\Attribute\Flatten;
+use Phigue\Attribute\Help;
+use Phigue\Attribute\Hidden;
+use Phigue\Attribute\Named;
+use Phigue\Attribute\Positional;
+use Phigue\Attribute\Secret;
+use Phigue\Attribute\Subcommand;
+use Phigue\Exception\MappingError;
 use ReflectionClass;
 use ReflectionNamedType;
 use ReflectionParameter;

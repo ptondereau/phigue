@@ -2,18 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace PHacet;
+namespace Phigue;
 
-use PHacet\Cache\Psr16ShapeCache;
-use PHacet\Cache\Psr6ShapeCache;
-use PHacet\Cache\ShapeCache;
-use PHacet\Help\HelpFormatter;
-use PHacet\Shape\Shape;
-use PHacet\Source\ArgvSource;
-use PHacet\Source\ArraySource;
-use PHacet\Source\EnvSource;
-use PHacet\Source\FileSource;
-use PHacet\Source\Source;
+use Phigue\Cache\Psr16ShapeCache;
+use Phigue\Cache\Psr6ShapeCache;
+use Phigue\Cache\ShapeCache;
+use Phigue\Help\HelpFormatter;
+use Phigue\Shape\Shape;
+use Phigue\Source\ArgvSource;
+use Phigue\Source\ArraySource;
+use Phigue\Source\EnvSource;
+use Phigue\Source\FileSource;
+use Phigue\Source\Source;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;

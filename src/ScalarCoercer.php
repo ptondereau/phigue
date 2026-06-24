@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace PHacet;
+namespace Phigue;
 
-use PHacet\Exception\TypeMismatch;
-use PHacet\Shape\Field;
+use Phigue\Exception\TypeMismatch;
+use Phigue\Shape\Field;
 
 final readonly class ScalarCoercer
 {

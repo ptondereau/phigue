@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace PHacet\Tests;
+namespace Phigue\Tests;
 
-use PHacet\Layered;
-use PHacet\Tests\Fixture\CliConfig;
-use PHacet\Tests\Fixture\ServerConfig;
+use Phigue\Layered;
+use Phigue\Tests\Fixture\CliConfig;
+use Phigue\Tests\Fixture\ServerConfig;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
