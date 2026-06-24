@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace PHacet;
 
+use PHacet\Cache\Psr16ShapeCache;
+use PHacet\Cache\Psr6ShapeCache;
+use PHacet\Cache\ShapeCache;
 use PHacet\Help\HelpFormatter;
 use PHacet\Shape\Shape;
 use PHacet\Source\ArgvSource;
@@ -11,6 +14,10 @@ use PHacet\Source\ArraySource;
 use PHacet\Source\EnvSource;
 use PHacet\Source\FileSource;
 use PHacet\Source\Source;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * @template T of object
@@ -24,6 +31,7 @@ final readonly class Layered
     private function __construct(
         private string $target,
         private array $sources,
+        private ?ShapeCache $cache = null,
     ) {
     }
 
@@ -42,7 +50,26 @@ final readonly class Layered
      */
     public function source(Source $source): self
     {
-        return new self($this->target, [...$this->sources, $source]);
+        return new self($this->target, [...$this->sources, $source], $this->cache);
+    }
+
+    /**
+     * Cache the reflection plan so introspection is skipped on later runs.
+     *
+     * Pass a PSR-3 logger to record backend read and write failures; without
+     * one those failures are swallowed and the plan is recomputed.
+     *
+     * @return self<T>
+     */
+    public function cache(CacheItemPoolInterface|CacheInterface $cache, ?LoggerInterface $logger = null): self
+    {
+        $logger ??= new NullLogger();
+
+        $adapter = $cache instanceof CacheItemPoolInterface
+            ? new Psr6ShapeCache($cache, $logger)
+            : new Psr16ShapeCache($cache, $logger);
+
+        return new self($this->target, $this->sources, $adapter);
     }
 
     /**
@@ -91,7 +118,7 @@ final readonly class Layered
      */
     public function build(): object
     {
-        $shape = Shape::of($this->target);
+        $shape = $this->cache?->shape($this->target) ?? Shape::of($this->target);
 
         $merged = [];
         foreach ($this->sources as $source) {
@@ -106,6 +133,8 @@ final readonly class Layered
 
     public function help(): string
     {
-        return ( new HelpFormatter() )->format(Shape::of($this->target));
+        $shape = $this->cache?->shape($this->target) ?? Shape::of($this->target);
+
+        return ( new HelpFormatter() )->format($shape);
     }
 }
